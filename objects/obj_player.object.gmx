@@ -45,6 +45,9 @@ hForce = 0;
 vForce = 0;
 movementLocked = false;
 canShoot = true;
+canHurt = true;
+hurtAlarm = 2;
+knockType = "LAND";
 
 //Sprite
 state = "IDLE";
@@ -53,9 +56,35 @@ image_speed = 15/60;
 skin = irandom(sprite_get_number(spr_player));
 
 //Stats
+maxHp = 10;
+hp = maxHp;
 firerate = room_speed*2; //2 seconds per shot
 b_speed = 3; //The speed of the bullet;
 b_damage = 1; //The damage of the bullet;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Reset canHurt;
+canHurt = true;
 </string>
           </argument>
         </arguments>
@@ -154,20 +183,24 @@ if (place_meeting(x+hsp+hForce,y,OBSTA))
     frict = frict_default;
     
     //Wall Jump if possible
-    if keyboard_check_pressed(ord("W")) &amp;&amp; (key_right || -key_left) &amp;&amp; canWallJump == true
+    if vsp != 0
     {
-        hForce += (wall_jumpspeed/2)*-image_xscale;
-        frict = frict_air;
-        vForce = -wall_jumpspeed;
-        vsp = 0;
-        canWallJump = false;
-        movementLocked = true;
-        if alarm[0] = -1 then alarm[0] = 8;
-        image_xscale = -image_xscale;
+        maxgrav = maxgrav_wall;
+        
+        if keyboard_check_pressed(ord("W")) &amp;&amp; (key_right || -key_left) &amp;&amp; canWallJump == true
+        {
+            hForce += (wall_jumpspeed/2)*-image_xscale;
+            frict = frict_air;
+            vForce = -wall_jumpspeed;
+            vsp = 0;
+            canWallJump = false;
+            movementLocked = true;
+            if alarm[0] = -1 then alarm[0] = 8;
+            image_xscale = -image_xscale;
+        }
     }
     
     hsp = 0;
-    maxgrav = maxgrav_wall;
     canWallJump = true;
     
 } else maxgrav = maxgrav_default;

@@ -11,12 +11,17 @@
     <sprite>sprites\spr_wall</sprite>
     <sprite>sprites\spr_gun</sprite>
     <sprite>sprites\spr_bullet</sprite>
+    <sprite>sprites\spr_ebullet</sprite>
+    <sprite>sprites\spr_skull</sprite>
+    <sprite>sprites\fnt_grem</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\approach.gml</script>
     <script>scripts\print.gml</script>
+    <script>scripts\scr_hurt.gml</script>
+    <script>scripts\scr_popMessage.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_player</object>
@@ -24,6 +29,10 @@
     <object>objects\obj_init</object>
     <object>objects\camera</object>
     <object>objects\obj_bullet</object>
+    <object>objects\obj_ebullet</object>
+    <object>objects\obj_skull</object>
+    <object>objects\ENEMY</object>
+    <object>objects\efct_popMessage</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\init_display</room>
