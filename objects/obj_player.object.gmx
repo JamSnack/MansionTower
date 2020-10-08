@@ -34,7 +34,7 @@ maxgrav_wall = 1;
 maxgrav = 7;
 hsp = 0;
 vsp = 0;
-jumpspeed = 5;
+jumpspeed = 6;
 wall_jumpspeed = 5;
 movespeed = 3;
 canWallJump = true;
@@ -48,6 +48,9 @@ canShoot = true;
 canHurt = true;
 hurtAlarm = 2;
 knockType = "LAND";
+dead = false;
+ox = x; //Origin X;
+oy = y; //Origin Y;
 
 //Sprite
 state = "IDLE";
@@ -58,7 +61,7 @@ skin = irandom(sprite_get_number(spr_player));
 //Stats
 maxHp = 10;
 hp = maxHp;
-firerate = room_speed*2; //2 seconds per shot
+firerate = 20; //seconds per shot
 b_speed = 3; //The speed of the bullet;
 b_damage = 1; //The damage of the bullet;
 </string>
@@ -85,6 +88,13 @@ b_damage = 1; //The damage of the bullet;
             <kind>1</kind>
             <string>///Reset canHurt;
 canHurt = true;
+
+if dead == true  
+{
+    x = ox;
+    y = oy;
+    dead = false;
+}
 </string>
           </argument>
         </arguments>
@@ -155,10 +165,15 @@ movementLocked = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Get the player's input
+            <string>if dead == true then exit;
+
+//Get the player's input
 key_right = keyboard_check(ord("D"));
 key_left = -keyboard_check(ord("A"));
 key_jump = keyboard_check(ord("W"));
+key_down = keyboard_check(ord("S"));
+
+if place_meeting(x,y,obj_platform) then key_down = true;
 
 //React to inputs
 move = key_left + key_right;
@@ -166,9 +181,10 @@ if hForce == 0 || movementLocked == false { hsp = approach(hsp,move * movespeed,
 vsp += grav;
 vsp = clamp(vsp,vsp,maxgrav);
 
-if (place_meeting(x,y+1,OBSTA))
+if key_jump &amp;&amp; ((place_meeting(x,y+1,OBSTA) || (place_meeting(x,y+1,obj_platform) &amp;&amp; vsp &gt;= 0)))
 {
-    vsp = key_jump * -jumpspeed
+    vsp = key_jump * -jumpspeed;
+    vForce = 0;
 }
 
 //Horizontal Collision
@@ -187,21 +203,27 @@ if (place_meeting(x+hsp+hForce,y,OBSTA))
     {
         maxgrav = maxgrav_wall;
         
-        if keyboard_check_pressed(ord("W")) &amp;&amp; (key_right || -key_left) &amp;&amp; canWallJump == true
+        if !place_meeting(x,y+8,OBSTA) &amp;&amp; keyboard_check(ord("W")) &amp;&amp; (key_right || -key_left) &amp;&amp; canWallJump == true
         {
-            hForce += (wall_jumpspeed/2)*-image_xscale;
-            frict = frict_air;
-            vForce = -wall_jumpspeed;
-            vsp = 0;
-            canWallJump = false;
-            movementLocked = true;
-            if alarm[0] = -1 then alarm[0] = 8;
-            image_xscale = -image_xscale;
+            var force_to_add = (wall_jumpspeed/2)*-image_xscale;
+        
+            if !(place_meeting(x+hsp+hForce+force_to_add,y,OBSTA))
+            {
+                hForce += force_to_add;
+                frict = frict_air;
+                vForce = -(wall_jumpspeed);
+                vsp = 0;
+                canWallJump = false;
+                movementLocked = true;
+                if alarm[0] = -1 then alarm[0] = 8;
+                image_xscale = -image_xscale;
+            }
         }
     }
     
     hsp = 0;
     canWallJump = true;
+    state = "WALL";
     
 } else maxgrav = maxgrav_default;
 
@@ -215,12 +237,32 @@ if (place_meeting(x,y+vsp+vForce,OBSTA))
     {
         y += sign(vsp+vForce);
     }
+    
+    vForce = 0;
+    vsp = 0;
+    frict = frict_default;
+    canWallJump = true;
+    movementLocked = false;
+} else if vsp+vForce &gt; 0 &amp;&amp; (place_meeting(x,y+vsp+vForce,obj_platform) &amp;&amp; !key_down)
+{
+    while(!place_meeting(x,y+sign(vsp+vForce),obj_platform))
+    {
+        y += sign(vsp+vForce);
+    }
+    
     vForce = 0;
     vsp = 0;
     frict = frict_default;
     canWallJump = true;
     movementLocked = false;
 }
+
+// - platforms
+if key_down &amp;&amp; place_meeting(x,y+1,obj_platform)
+{
+    vsp+=grav;
+}
+
 
 y += vsp+vForce;
 vForce = approach(vForce,0,frict);
@@ -232,9 +274,9 @@ if movementLocked == false &amp;&amp; hsp != 0  &amp;&amp; vsp == 0
 } else if hsp == 0 &amp;&amp; vsp == 0
 {
     state = "IDLE";
-} else if vsp &gt; 0 then state = "JUMP"
+} else if vsp &gt; 0 &amp;&amp; !position_meeting(x+12*move,y,OBSTA) then state = "JUMP"
 
-if maxgrav == maxgrav_wall then state = "WALL";
+if maxgrav == maxgrav_wall then state = "OBSTA";
 
 switch state
 {
@@ -252,7 +294,7 @@ switch state
     }
     break;
     
-    case "WALL":
+    case "OBSTA":
     {
         image_speed = 0;
         image_index = 0;
@@ -275,6 +317,9 @@ if dev == true
     if keyboard_check(vk_left) then x-=5;
     if keyboard_check(vk_right) then x+=5;
 }
+
+//Death
+visible = !dead;
 </string>
           </argument>
         </arguments>
@@ -402,6 +447,29 @@ firerate = (30)+(b_speed*4);
         </arguments>
       </action>
     </event>
+    <event eventtype="10" enumb="98">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>layoutControl.maxFloors += 1;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="10" enumb="82">
       <action>
         <libid>1</libid>
@@ -419,7 +487,7 @@ firerate = (30)+(b_speed*4);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>room_restart();
+            <string>game_restart();
 </string>
           </argument>
         </arguments>

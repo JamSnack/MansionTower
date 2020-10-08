@@ -4,9 +4,13 @@ var time = argument1; //Time until it can be hurt again.
 var knock = argument2; //Whether or not to apply knockback.
 var knockAmt = argument3; // How much knockback to be applied.
 
+//Destroy things that are not the player object when enough damage is dealt.
 if hp-damage <= 0
 {
-    instance_destroy();
+    if object_get_name(object_index) == "obj_player"
+    {
+        dead = true;
+    } else instance_destroy();
 }
 
 canHurt = false;

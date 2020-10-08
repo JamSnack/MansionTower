@@ -9,11 +9,13 @@
     <sprite>sprites\spr_player_legs</sprite>
     <sprite>sprites\spr_player</sprite>
     <sprite>sprites\spr_wall</sprite>
+    <sprite>sprites\spr_platform</sprite>
     <sprite>sprites\spr_gun</sprite>
     <sprite>sprites\spr_bullet</sprite>
     <sprite>sprites\spr_ebullet</sprite>
     <sprite>sprites\spr_skull</sprite>
     <sprite>sprites\fnt_grem</sprite>
+    <sprite>sprites\mask_layout</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -37,11 +39,13 @@
     <object>objects\efct_popMessage</object>
     <object>objects\obj_cameraPoint</object>
     <object>objects\layoutControl</object>
+    <object>objects\obj_platform</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\init_display</room>
     <room>rooms\layout_template</room>
     <room>rooms\layout_floor1_1</room>
+    <room>rooms\layout_floor1_2</room>
     <room>rooms\rm_zero</room>
   </rooms>
   <help>

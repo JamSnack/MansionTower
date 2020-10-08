@@ -72,10 +72,10 @@ if instance_exists(_followThis)
     
     if distance_to_point(fx,fy) &gt; 2
     {
-        x += ((fx - x)*follow_speed)*0.5;
+        //x += ((fx - x)*follow_speed)*0.5;
         y += ((fy - y)*follow_speed)*0.5;
         
-        round(x);
+        //round(x);
         round(y);
     }
     
