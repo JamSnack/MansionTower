@@ -16,7 +16,6 @@ hp -= damage;
 if knock == true
 {
     hForce = knockAmt*(x-other.x);
-    print(hForce);
     vForce = knockAmt*(y-other.y);
     knockBack = true;
     

@@ -22,6 +22,8 @@
     <script>scripts\print.gml</script>
     <script>scripts\scr_hurt.gml</script>
     <script>scripts\scr_popMessage.gml</script>
+    <script>scripts\scr_roomCreate.gml</script>
+    <script>scripts\scr_loadWorld.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_player</object>
@@ -33,9 +35,13 @@
     <object>objects\obj_skull</object>
     <object>objects\ENEMY</object>
     <object>objects\efct_popMessage</object>
+    <object>objects\obj_cameraPoint</object>
+    <object>objects\layoutControl</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\init_display</room>
+    <room>rooms\layout_template</room>
+    <room>rooms\layout_floor1_1</room>
     <room>rooms\rm_zero</room>
   </rooms>
   <help>

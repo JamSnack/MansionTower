@@ -267,6 +267,14 @@ switch state
     }
     break;
 }
+
+if dev == true
+{
+    if keyboard_check(vk_up) then y-=(5+vsp);
+    if keyboard_check(vk_down) then y+=(5+vsp);
+    if keyboard_check(vk_left) then x-=5;
+    if keyboard_check(vk_right) then x+=5;
+}
 </string>
           </argument>
         </arguments>
@@ -387,7 +395,8 @@ draw_sprite_ext(spr_gun,clamp(skin,0,sprite_get_number(spr_gun)),x+lengthdir_x(8
             <string>skin += 1;
 if skin+1 &gt; sprite_get_number(spr_player) then skin = 0;
 b_speed = irandom(8)+1;
-firerate = (room_speed)+(b_speed*2);
+//The faster the bullet, the higher the time it takes to fire it.
+firerate = (30)+(b_speed*4);
 </string>
           </argument>
         </arguments>
