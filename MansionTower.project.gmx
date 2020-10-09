@@ -16,6 +16,8 @@
     <sprite>sprites\spr_skull</sprite>
     <sprite>sprites\fnt_grem</sprite>
     <sprite>sprites\mask_layout</sprite>
+    <sprite>sprites\spr_terranceTomato</sprite>
+    <sprite>sprites\spr_bossGate</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -26,8 +28,13 @@
     <script>scripts\scr_popMessage.gml</script>
     <script>scripts\scr_roomCreate.gml</script>
     <script>scripts\scr_loadWorld.gml</script>
+    <script>scripts\scr_deactivateOffscreen.gml</script>
+    <script>scripts\floorScale.gml</script>
+    <script>scripts\ai_terranceTomato.gml</script>
+    <script>scripts\scr_get_floor_number.gml</script>
   </scripts>
   <objects name="objects">
+    <object>objects\layoutControl</object>
     <object>objects\obj_player</object>
     <object>objects\OBSTA</object>
     <object>objects\obj_init</object>
@@ -38,12 +45,16 @@
     <object>objects\ENEMY</object>
     <object>objects\efct_popMessage</object>
     <object>objects\obj_cameraPoint</object>
-    <object>objects\layoutControl</object>
     <object>objects\obj_platform</object>
+    <object>objects\gameControl</object>
+    <object>objects\obj_terranceTomato</object>
+    <object>objects\enemySpawn</object>
+    <object>objects\obj_bossGate</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\init_display</room>
     <room>rooms\layout_template</room>
+    <room>rooms\layout_floor1_TT</room>
     <room>rooms\layout_floor1_1</room>
     <room>rooms\layout_floor1_2</room>
     <room>rooms\rm_zero</room>

@@ -26,12 +26,18 @@
           <argument>
             <kind>1</kind>
             <string>///Initialize the enemy
+if room != rm_zero then exit;
 maxHp = 5;
 hp = maxHp;
 canHurt = true;
 hurtAlarm = 11;
 
 knockType = noone;
+stateLock = false;
+atkBox = 16;
+scale = 1;
+hForce = 0;
+vForce = 0;
 </string>
           </argument>
         </arguments>

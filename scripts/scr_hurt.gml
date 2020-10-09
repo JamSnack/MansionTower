@@ -19,8 +19,8 @@ hp -= damage;
 
 if knock == true
 {
-    hForce = knockAmt*(x-other.x);
-    vForce = knockAmt*(y-other.y);
+    hForce += knockAmt*(x-other.x);
+    vForce += knockAmt*(y-other.y);
     knockBack = true;
     
     if knockType == "LAND"

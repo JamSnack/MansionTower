@@ -2,9 +2,9 @@
 <object>
   <spriteName>mask_layout</spriteName>
   <solid>0</solid>
-  <visible>0</visible>
+  <visible>-1</visible>
   <depth>0</depth>
-  <persistent>-1</persistent>
+  <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -25,16 +25,30 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>globalvar layouts,ox,oy;
-layouts = ds_list_create();
-ox = x; //Origin X;
-oy = y; //Origin Y;
-
-//Dynamic Locals
-lastX = 0; //The X coordinate of the first floor.
-lastY = 0; //The Y coordinate of the first floor.
-floors = 0; //The amount of floors in existence;
-maxFloors = 5; //The maximum amount of floor spawns.
+            <string>local_floor_number = scr_get_floor_number();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>instance_create(x,y,obj_terranceTomato);
 </string>
           </argument>
         </arguments>
@@ -57,87 +71,10 @@ maxFloors = 5; //The maximum amount of floor spawns.
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Generate some stuff
-if room == rm_zero &amp;&amp; floors &lt; maxFloors
+            <string>if floor_number == local_floor_number
 {
-    var ox = 128;
-    var oy = 200;
-    
-    event_user(0);
+    instance_destroy();
 }
-
-if room == rm_zero then exit;
-
-if room == layout_template
-{
-    room_goto_next();
-    exit;
-}
-
-//Condense a room into fat.
-var roomWidth = room_width/16;
-var roomHeight = room_height/16;
-var grid = ds_grid_create(roomWidth,roomHeight);
-
-for(i=0;i&lt;roomWidth*roomHeight;i++)
-{
-    var column = floor(i/16);
-    var iteratorX = 16*i-(column*roomWidth*16);
-    var iteratorY = 16*column;
-    
-    if !place_empty(iteratorX,iteratorY)
-    {
-        var inst = instance_place(iteratorX,iteratorY,all);
-        
-        if inst != noone then ds_grid_add(grid,i-(floor(i/16)*16),floor(i/16),inst.object_index);
-    }
-}
-
-//Add the layout to the list.
-ds_list_add(layouts,grid);
-room_goto_next();
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="7" enumb="10">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Generate a room using a layout.
-var layout = layouts[| irandom(1)];
-var roomWidth = ds_grid_width(layout);
-var roomHeight = ds_grid_height(layout);
-var size = roomWidth*roomHeight;
-
-for(i=0;i&lt;size;i++)
-{
-    var column = floor(i/roomWidth);
-    var iteratorX = 16*i-(column*roomWidth*16);
-    var iteratorY = 16*column;
-
-    var inst = ds_grid_get(layout,i-(floor(i/16)*16),floor(i/16));
-    
-    if inst != 0
-    { instance_create(lastX+(i-(floor(i/16)*16))*16,lastY+(floor(i/16))*16,inst); }
-}
-
-lastY-=240;
-floors+=1;
 </string>
           </argument>
         </arguments>

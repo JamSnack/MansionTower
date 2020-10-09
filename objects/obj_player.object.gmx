@@ -49,8 +49,6 @@ canHurt = true;
 hurtAlarm = 2;
 knockType = "LAND";
 dead = false;
-ox = x; //Origin X;
-oy = y; //Origin Y;
 
 //Sprite
 state = "IDLE";
@@ -64,6 +62,10 @@ hp = maxHp;
 firerate = 20; //seconds per shot
 b_speed = 3; //The speed of the bullet;
 b_damage = 1; //The damage of the bullet;
+
+//globals
+globalvar floor_number;
+floor_number = floor((oy-y+16)/240);
 </string>
           </argument>
         </arguments>
@@ -91,6 +93,7 @@ canHurt = true;
 
 if dead == true  
 {
+    print("died!");
     x = ox;
     y = oy;
     dead = false;
@@ -320,6 +323,9 @@ if dev == true
 
 //Death
 visible = !dead;
+
+//Floor number update
+floor_number = floor((oy-y+16)/240);
 </string>
           </argument>
         </arguments>
@@ -414,7 +420,9 @@ draw_sprite_ext(spr_player,skin,x,y,xscale,image_yscale,angle,c_white,image_alph
 //Draw gun
 var dir = point_direction(x,y,mouse_x,mouse_y);
 if dir &gt; 90 &amp;&amp; dir &lt; 270 then gun_xscale = -1 else gun_xscale = 1;
-draw_sprite_ext(spr_gun,clamp(skin,0,sprite_get_number(spr_gun)),x+lengthdir_x(8,dir),y+lengthdir_y(8,dir)+6,1,gun_xscale,dir,c_white,1)
+draw_sprite_ext(spr_gun,clamp(skin,0,sprite_get_number(spr_gun)),x+lengthdir_x(8,dir),y+lengthdir_y(8,dir)+6,1,gun_xscale,dir,c_white,1);
+
+draw_text(x,y,"Current Floor: "+string(scr_get_floor_number()));
 </string>
           </argument>
         </arguments>
